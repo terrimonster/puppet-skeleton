@@ -1,0 +1,21 @@
+---
+profile::puppet::master::r10k::mco_enable: true
+profile::puppet::master::r10k::webhook: true
+profile::puppet::master::r10k::git_server: gitserver.com
+profile::puppet::master::modulepath: '/etc/puppetlabs/puppet/environments/$environment/backpage:/etc/puppetlabs/puppet/environments/$environment/modules:/opt/puppet/share/puppet/modules'
+profile::puppet::master::manifest: '/etc/puppetlabs/puppet/environments/$environment/manifests/site.pp'
+profile::puppet::master::environments_dir: '/etc/puppetlabs/puppet/environments'
+profile::puppet::master::r10k_enable: true
+profile::puppet::master::r10k_control_repo: git@gitserver.com:puppet/puppet-control.git
+profile::puppet::master::hiera_extra_config: |
+  :eyaml:
+    :datadir: '/etc/puppetlabs/puppet/environments/%%{}{::environment}/data'
+    :pkcs7_private_key: /etc/puppetlabs/puppet/keys/private_key.pkcs7.pem
+    :pkcs7_public_key:  /etc/puppetlabs/puppet/keys/public_key.pkcs7.pem
+profile::puppet::master::hiera_backends:
+  - yaml
+  - eyaml
+profile::puppet::master::hiera_hierarchy:
+  - secure
+  - 'clientcert/%%{}{::clientcert}'
+  - common
